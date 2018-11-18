@@ -54,10 +54,26 @@ class Matrix(object):
 
         return return_matrix
 
-my1 = Matrix(4, 4)
-my2 = Matrix(4, 1)
+    def __mul__(self, other):
+        return times(self, other)
 
-my1.set(1, 1, 1)
-my2.set(1, 1, 4)
+    def __add__(self, other):
+        dim = self.dimensions()
+        new = Matrix(dim[0], dim[1])
+        for i in range(1, dim[0] + 1):
+            for j in range(1, dim[1] + 1):
+                new.set(i, j, self.get(i, j) + other.get(i, j))
+        return new
 
-my3 = my1.times(my2)
+    def __getitem__(self, key):
+        return self.get(key[0], key[1])
+
+    def __eq__(self, other):
+        if self.dimensions() != other.dimensions():
+            return False
+        else:
+            for i in range(1, self.dimensions()[0] + 1):
+                for j in range(1, self.dimensions()[1] + 1):
+                    if self[i, j] != other[i, j]:
+                        return False
+        return True
