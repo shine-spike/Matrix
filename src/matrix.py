@@ -1,3 +1,5 @@
+import itertools
+
 class Matrix(object):
     """A matrix on a certain field."""
 
@@ -77,3 +79,28 @@ class Matrix(object):
                     if self[i, j] != other[i, j]:
                         return False
         return True
+
+    def __repr__(self):
+        return "\n".join([str(c) for c in self.entries])
+
+    def determinant(self):
+        det = 0
+        for perm in itertools.permutations(range(1, self.dimensions()[0]  + 1)):
+            det += sign(perm) * prod([self.get(perm[i], i + 1) for i in range(self.dimensions()[0])])
+        return det
+
+def prod(li):
+    n = 1
+    for i in li:
+        n *= i
+    return n
+
+def sign(permutation):
+  sign = 1
+  n = len(permutation)
+  for i in range(n):
+    for j in range(i + 1, n):
+      if permutation[i] > permutation[j]:
+        sign *= -1
+  return sign
+
